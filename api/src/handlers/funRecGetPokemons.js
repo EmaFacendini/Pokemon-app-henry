@@ -30,7 +30,7 @@ async function recursiveGetPokemons(url){
              
     })
 
-         return arreglo_pokemones
+         return arreglo_pokemones;
 
 
         } catch (error) {

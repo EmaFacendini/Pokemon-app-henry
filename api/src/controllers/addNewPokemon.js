@@ -1,5 +1,5 @@
 const { v4 } = require('uuid');
-const {Pokemon, Type, conn} = require("../db");
+const {Pokemon, Type} = require("../db");
 
 
 async function addPokemon(req,res){

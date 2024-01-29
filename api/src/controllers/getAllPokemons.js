@@ -1,58 +1,45 @@
-const {Pokemon, Type} = require("../db");
-const recursiveGetPokemons = require("../handlers/funRecGetPokemons")
+const { Pokemon, Type } = require("../db");
+const recursiveGetPokemons = require("../handlers/funRecGetPokemons");
 
-async function getAllPokemons(req,res){
-    // primeros
-    try {
-        const pokemonsFromApi = await recursiveGetPokemons("https://pokeapi.co/api/v2/pokemon");
-        console.log("hasta el primer entry")
-        const pokemonsFromDb = await Pokemon.findAll({include: Type});
+async function getAllPokemons(req, res) {
+  try {
+    // Obtener información detallada de Pokémon desde la API externa
+    const pokemonsFromApi = await recursiveGetPokemons("https://pokeapi.co/api/v2/pokemon");
 
-    // console.log(pokemonsFromDb.map(obj=>obj.dataValues))
-   
-        
-        if(pokemonsFromDb.length > 0){
-            console.log("entro al db")
-        const arregloPokemonsDb = pokemonsFromDb.map(obj=>{
-            const {id, name, types, attack} = obj.dataValues;      
-            const typesNames = types.map(ty=> ty.name)
-            return {
-                name,
-                id,
-                attack,
-                types: typesNames
-            }
+    // Obtener todos los Pokémon de la base de datos local, incluyendo información sobre los tipos
+    const pokemonsFromDb = await Pokemon.findAll({ include: Type });
 
-        })
-         const promesasApi = await Promise.all(pokemonsFromApi);
+    if (pokemonsFromDb.length > 0) {
+      // Mapear los Pokémon de la base de datos para estructurar la información adecuadamente
+      const arregloPokemonsDb = pokemonsFromDb.map((obj) => {
+        const { id, name, types, attack } = obj.dataValues;
+        const typesNames = types.map((ty) => ty.name);
+        return {
+          name,
+          id,
+          attack,
+          types: typesNames,
+        };
+      });
 
-        // const promesasBd = await Promise.all(arregloPokemonsDb);
-        console.log("entro a combinar las dos promesas")
-        Promise.all([promesasApi, arregloPokemonsDb])
-        .then(respuesta=>{
-            const [pokesApi,pokesBd] = respuesta;
-            const arregloCompleto = pokesApi.concat(pokesBd);
-            return res.send(arregloCompleto)
-        } )
-                
-    
+      // Esperar a que todas las promesas generadas por la API externa se resuelvan
+      const promesasApi = await Promise.all(pokemonsFromApi);
+
+      // Combinar las promesas generadas por la API externa y los Pokémon de la base de datos local
+      const arregloCompleto = promesasApi.concat(arregloPokemonsDb);
+
+      // Enviar la respuesta completa al cliente
+      return res.send(arregloCompleto);
+    } else {
+      // Si no hay Pokémon en la base de datos, enviar directamente los de la API externa
+      const results = await Promise.all(pokemonsFromApi);
+      return res.send(results);
     }
-    else{
-        console.log("vino solo a los de las api")
-        Promise.all(pokemonsFromApi)
-        .then(results=> res.send(results))
-        console.log("espera a las promesas")        
-   
-
-        // return res.json(pokemonsFromApi)
-    }
-        
-    } catch (error) {
-        console.log(error)
-        console.log("ENTRO AL CATCH")
-        res.status(400).send(error)
-    }
-    
-   
+  } catch (error) {
+    // Capturar cualquier error que ocurra durante el proceso y enviar un código de estado 400 junto con el mensaje de error
+    console.error(error);
+    return res.status(400).send(error.message);
+  }
 }
+
 module.exports = getAllPokemons;
