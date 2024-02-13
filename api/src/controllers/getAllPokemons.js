@@ -45,8 +45,17 @@ async function getPokemonsDb() {
         });
 
         return arrayPokemonsDb.map((p) => ({
-            id: p.id,
-            name: p.name,
+            id:p.id,
+            name:p.name,
+            image:p.image,
+            hp:p.hp,
+            attack: p.attack,
+            defense: p.defense,
+            speed: p.speed, 
+            height: p.height,
+            weight: p.weight,
+            types:p.types.map((type)=>type.name),
+            createdInDb:p.createdInDb
             // Agrega otras propiedades según tus necesidades
         }));
     } catch (error) {

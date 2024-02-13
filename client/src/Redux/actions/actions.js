@@ -104,10 +104,10 @@ export const getPokemon = () => {
       payload
     }
   }
-  export const filterByType = (type)=>{
+  export const filterByType = (payload)=>{
     return{
       type: FILTER_BY_TYPE,
-      payload: type,
+      payload
     }
   }
   export const clearDetail = () => {

@@ -41,21 +41,35 @@ const initialState = {
         };
       
         case "FILTER_BY_TYPE":
-          const typeFiltered = state.allPokemons.filter((p) => {
-            return p.types.some((type) => type.name === action.payload);
-          });
-          if (typeFiltered.length) {
-            return {
-              ...state,
-              filter: true,
-              pokeFilter: typeFiltered,
-            };
-          } else {
-            return {
-              ...state,
-              pokeFilter: false,
-            };
+          if(action.payload === "all") {return {...state, pokemons:state.allPokemons}}
+              
+          const typeSelected = state.allPokemons?.filter((el) => {
+              if(!el.createdInDb){
+                  if(el.types[0] === action.payload || el.types[1] == action.payload){
+    
+                   return true 
+                  }
+                  else return false 
+              } 
+              else {
+                  const acum = el.pokeTypes?.filter((t) => t.name === action.payload)
+                      if(acum.length >0){
+                      return true 
+                      }
+                      else {
+                      return false 
+                      }
+                  }       
+              })
+          
+          const results = typeSelected.filter((pk) => state.allPokemons.includes(pk))
+          
+          return {
+                ...state,
+                pokemons: results,
+                
           }
+    
   
       case "ORDER_BY_NAME":
         if (action.payload === "asc") {

@@ -37,6 +37,11 @@ module.exports = (sequelize) => {
     weight:{
       type: DataTypes.INTEGER,
       deafult: 50
-    }
+    },
+    createdInDb: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
   });
 };
