@@ -31,45 +31,32 @@ const initialState = {
       case "GET_TYPES":
         return {
           ...state,
-          pokeTypes: action.payload,
+          pokeTypes: [...action.payload],
         };
   
       case "GET_BY_NAME":
         return {
           ...state,
-          pokemons: action.payload,
-        };
+          pokemons: state.pokemons.filter((pokemon) => pokemon.name === action.payload.name),
+          loader: true
+      };
       
         case "FILTER_BY_TYPE":
-          if(action.payload === "all") {return {...state, pokemons:state.allPokemons}}
-              
-          const typeSelected = state.allPokemons?.filter((el) => {
-              if(!el.createdInDb){
-                  if(el.types[0] === action.payload || el.types[1] == action.payload){
-    
-                   return true 
-                  }
-                  else return false 
-              } 
-              else {
-                  const acum = el.pokeTypes?.filter((t) => t.name === action.payload)
-                      if(acum.length >0){
-                      return true 
-                      }
-                      else {
-                      return false 
-                      }
-                  }       
-              })
-          
-          const results = typeSelected.filter((pk) => state.allPokemons.includes(pk))
-          
-          return {
-                ...state,
-                pokemons: results,
-                
+          const AllPoke = state.allPokemons;
+          const typeFiltered = state.allPokemons.filter((p) => {
+            return p.types.some((type) => type.name === action.payload);
+          });
+          if (typeFiltered.length) {
+            return {
+              ...state,
+              pokemons: typeFiltered,
+            };
+          } else {
+            return {
+              ...state,
+              pokemons: AllPoke,
+            };
           }
-    
   
       case "ORDER_BY_NAME":
         if (action.payload === "asc") {
