@@ -1,0 +1,20 @@
+
+.buttonImage{
+   border-radius: 99rem;
+   background-color: rgb(207, 182, 149);
+   margin-top: 10rem;
+   width: 90px;
+   height: 90px;
+    
+}
+.createdBy{
+   height: 60px;
+   width: 450px;
+   display: flex;
+   margin-top: 200px;
+   justify-content: center;
+   margin-left: 34rem;
+}
+.tittle{
+   margin-top: 1rem;
+}
