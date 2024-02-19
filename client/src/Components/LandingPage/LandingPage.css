@@ -1,20 +1,55 @@
 
-.buttonImage{
-   border-radius: 99rem;
-   background-color: rgb(207, 182, 149);
-   margin-top: 10rem;
-   width: 90px;
-   height: 90px;
-    
+.imageButton {
+   display: inline-block; /* Convertir el enlace en un bloque en línea */
+   border-radius: 99rem; /* Ajustar el radio del borde para que parezca un botón circular */
+   background-color: rgb(240, 241, 248); /* Color de fondo */
+   padding: 5px; /* Añadir relleno para hacer clic en el área más grande */
 }
+
+.imageButton img {
+   display: block; /* Hacer que la imagen llene todo el espacio del enlace */
+   width: 90px; /* Ancho deseado de la imagen */
+   height: 90px; /* Altura deseada de la imagen */
+}
+
+.imageButton:hover::after {
+   content: "Gotta catch 'em all!"; /* Texto que aparecerá al pasar el mouse */
+   position: absolute; /* Posición absoluta en relación con el contenedor */
+   bottom: 10px; /* Ajustar la posición vertical */
+   left: 50%; /* Centrar horizontalmente */
+   transform: translateX(-50%); /* Centrar horizontalmente */
+   background-color: rgba(0, 0, 0, 0.7); /* Color de fondo del texto */
+   color: white; /* Color del texto */
+   padding: 5px 10px; /* Espaciado interno del texto */
+   border-radius: 5px; /* Borde redondeado */
+   z-index: 1; /* Asegurar que esté encima de la imagen */
+}
+
 .createdBy{
-   height: 60px;
-   width: 450px;
+   height: 50%;
+   width:  50%;
    display: flex;
-   margin-top: 200px;
+   margin-top: 2%;
    justify-content: center;
-   margin-left: 34rem;
+   margin-left: 23%;
 }
 .tittle{
    margin-top: 1rem;
+}
+
+.pikachuRun {
+   height: 10%;
+   width:  10%;
+   margin-top: 15%;
+   position: absolute;
+   animation: moveRight 4s linear infinite; /* Animación para mover de izquierda a derecha */
+}
+
+@keyframes moveRight {
+  0% {
+    left: 0%; /* Comienza desde la izquierda */
+  }
+  100% {
+    left: 90%; /* Termina en la derecha */
+  }
 }
